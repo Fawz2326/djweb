@@ -23,6 +23,7 @@ urlpatterns = [
     path('blog/', views.blog, name='blog'),
     path('blogpost/<int:parametr>/', views.blogpost, name='blogpost'),
     path('newpost/', views.newpost, name='newpost'),
+    path('videopost/', views.videopost, name='videopost'),
 
         path('login/',
          LoginView.as_view
