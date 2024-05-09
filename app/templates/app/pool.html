@@ -1,0 +1,63 @@
+{% extends "app/layout.html" %}
+{% block content %}
+{% if form != None %}
+<br><h2>Отправьте пожалуйста заполненную анкету</h2><br>
+ <div>
+   <form id="myForm" method="post">
+   {% csrf_token %}
+   <label for="{{ form.name.id_for_label }}">{{ form.name.label }}:</label> {{form.name}}<br><br>
+   <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }}:</label> {{form.gender}}<br>
+   <label for="{{ form.age.id_for_label }}">{{ form.age.label }}:</label> {{form.age}}<br />
+   <label for="{{form.notice.id_for_label }}">{{ form.notice.label }}:</label>
+   {{ form.notice }}<br><br>
+   <label for="{{ form.email.id_for_label }}">{{ form.email.label }}:</label>
+   {{form.email }}<br><br>
+   <label for="{{ form.message.id_for_label }}">{{ form.message.label }}:</label>
+   {{form.message }}<br><br>
+   <input type="submit" value="Отправить" id="submitButton">
+   </form>
+ </div>
+<script>
+// JavaScript код для добавления динамических эффектов
+document.addEventListener("DOMContentLoaded", function() {
+    // Добавление эффекта изменения цвета надписи на кнопке отправки формы при наведении на нее курсора мыши
+    document.getElementById("submitButton").addEventListener("mouseover", function() {
+        this.style.color = "red"; // Изменение цвета текста кнопки
+    });
+
+    // Восстановление исходного цвета текста кнопки при выходе курсора мыши из области кнопки
+    document.getElementById("submitButton").addEventListener("mouseout", function() {
+        this.style.color = ""; // Восстановление исходного цвета текста кнопки
+    });
+
+    // Добавление эффекта изменения цвета фона полей ввода при их выборе для ввода
+    var inputFields = document.querySelectorAll("input[type='text'], input[type='email'], textarea");
+    inputFields.forEach(function(input) {
+        input.addEventListener("focus", function() {
+            this.style.backgroundColor = "lightgrey"; // Изменение цвета фона поля ввода
+        });
+
+        // Восстановление исходного цвета фона поля ввода при выходе из него
+        input.addEventListener("blur", function() {
+            this.style.backgroundColor = ""; // Восстановление исходного цвета фона поля ввода
+        });
+    });
+});
+</script>
+{% else %}
+<br><h2>Благодарим за предоставленную информацию! </h2>
+<h3>Вы сообщили о себе следующее: </h3>
+<ul>
+   <li><span>Имя:</span> {{ data.name}}</li> 
+   <li><span>Пoл:</span> {{ data.gender }}</li>
+   <li><span>Возраст:</span> {{ data.age }}</li>
+   <li><span>Получать новости сайта на e-mail:</span>
+             {{ data.notice }}
+   </li>
+   <li><span>Baш e-mail: </span> {{ data.email }}</li>
+   <li><span>Инфopмация о себе:</span> {{ data.message }}</li>
+</ul>
+{% endif %}
+{% endblock %}
+
+

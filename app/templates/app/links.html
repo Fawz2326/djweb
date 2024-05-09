@@ -1,0 +1,23 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+{% load staticfiles %}
+
+<h2>{{ title }}.</h2>
+<h3>{{ message }}</h3>
+<main>
+        <section>
+            <h2>Ссылки на другие ресурсы</h2>
+            <ul>
+                <li><a href="https://www.japan-guide.com/" target="_blank" > <img src="{% static 'app/content/logo14.jpg' %}" alt="Logo 1"/> Сайт "Япония Онлайн"</a> -Информационный портал о Японии, предоставляющий обширную информацию о японской культуре, традициях, истории, географии и многом другом.</li>
+                <br /><br />
+                <li><a href="https://www.tnm.jp/" target="_blank"> <img src="{% static 'app/content/logo13.png' %}" alt="Logo 2"/> Tokyo National Museum</a> - Один из крупнейших музеев в Японии.</li>
+               <br /><br />
+                <li><a href="https://myanimelist.net/" target="_blank"> <img src="{% static 'app/content/logo15.jpg' %}" alt="Logo 3"/> MyAnimeList</a> - Онлайн-сообщество для любителей аниме и манги.</li>
+               <br /><br />
+                <li><a href="https://www.japancraft.co.uk/" target="_blank"> <img src="{% static 'app/content/logo11.jpg' %}" alt="Logo 4"/> Japan Craft</a> - Магазин традиционных японских ремесел и подарков.</li>
+            </ul>
+        </section>
+    </main>
+
+{% endblock %}
