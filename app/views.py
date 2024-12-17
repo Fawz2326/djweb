@@ -230,10 +230,10 @@ def cart(request):
     if not request.user.is_authenticated:
         return redirect('login')  # Перенаправление на страницу входа
     items = CartItem.objects.filter(user=request.user)
-    total_price = sum(item.product.price * item.quantity for item in items)
+    total_cart_price = sum(item.total_price() for item in items)
     return render(request, 'app/cart.html', {
         'items': items,
-        'total_price': total_price
+        'total_cart_price': total_cart_price,
     })
 
 #@login_required

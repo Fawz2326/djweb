@@ -6,7 +6,7 @@
 {% if items %}
 <table>
     <tr>
-        <th>Изображение</th>
+        <th>Товар</th>
         <th>Наименование</th>
         <th>Цена за штуку</th>
         <th>Количество</th>
@@ -14,7 +14,7 @@
     </tr>
     {% for item in items %}
     <tr>
-        <td><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="100"></td>
+        <td><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="75"></td>
         <td>{{ item.product.name }}</td>
         <td>{{ item.product.price }}</td>
         <td>
@@ -24,12 +24,13 @@
                 <button type="submit">Обновить</button>
             </form>
         </td>
-        <td>{{ item.total_price }}</td>
+        <td>{{ item.total_price }} </td>
     </tr>
     {% endfor %}
+    
 </table>
 
-<h3>Итоговая сумма: {{ total }} ₽</h3>
+<h3>Итоговая сумма: {{ total_cart_price }} ₽</h3>
 {% else %}
 <p>Ваша корзина пуста.</p>
 {% endif %}
