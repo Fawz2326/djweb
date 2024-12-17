@@ -1,0 +1,22 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>Каталог товаров</h2>
+
+{% for category in categories %}
+    <h3>{{ category.name }}</h3>
+    <ul>
+        {% for product in category.products.all %}
+        <li>
+            <strong>{{ product.name }}</strong><br>
+            <p>{{ product.description }}</p>
+            <p>Цена: {{ product.price }} руб.</p>
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">
+            <br /><br />
+        </li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+
+{% endblock %}

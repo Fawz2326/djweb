@@ -30,6 +30,7 @@
                     <li><a href="{% url 'links' %}">Полезные ссылки</a></li>
                     <li><a href="{% url 'pool' %}">Отзывы</a></li>
                     <li><a href="{% url 'blog' %}">Блог</a></li>
+                    <li><a href="{% url 'catalog' %}">Каталог</a></li>
                     {% if user.is_superuser %}
                     <li><a href="{% url 'newpost' %}">Добавить статью</a></li>
                     {% endif %}

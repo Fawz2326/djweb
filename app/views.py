@@ -14,6 +14,7 @@ from .forms import BlogForm
 
 from .models import Comment
 from .forms import CommentForm
+from .models import Category
 
 def home(request):
     """Renders the home page."""
@@ -212,3 +213,12 @@ def videopost(request):
             'year':datetime.now().year,
         }
     )
+
+def catalog(request):
+    categories = Category.objects.prefetch_related('products').all()
+    context = {
+        'categories': categories,
+        'title': 'Каталог товаров',
+        'message': 'Добро пожаловать в наш интернет-магазин!'
+    }
+    return render(request, 'app/catalog.html', context)

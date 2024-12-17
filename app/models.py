@@ -46,3 +46,22 @@ class Comment(models.Model):
         verbose_name = "Комментарии к статье блога"
         verbose_name = "Комментарии к статьям блога"
 admin.site.register(Comment)
+
+# Модель категории
+class Category(models.Model):
+    name = models.CharField(max_length=100, unique=True, verbose_name="Наименование категории")
+    
+    def __str__(self):
+        return self.name
+
+
+# Модель товара/услуги
+class Product(models.Model):
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, verbose_name="Наименование товара/услуги")
+    description = models.TextField(max_length=1000, verbose_name="Описание товара/услуги")
+    image = models.ImageField(upload_to='products/', verbose_name="Изображение товара/услуги")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена")
+
+    def __str__(self):
+        return self.name
