@@ -1,26 +1,37 @@
 {% extends "app/layout.html" %}
-
+<!-- {% load staticfiles %}
+<link rel="stylesheet" href="{% static 'app/content/site.css' %}">-->
 {% block content %}
-
 <h2>Каталог товаров</h2>
 
-{% for category in categories %}
-    <h3>{{ category.name }}</h3>
-    <ul>
-        {% for product in category.products.all %}
-        <li>
-            <strong>{{ product.name }}</strong><br>
-            <p>{{ product.description }}</p>
-            <p>Цена: {{ product.price }} руб.</p>
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">
-            <br /><br />
-            <!--<a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Добавить в корзину</a>-->
-            <form action="{% url 'add_to_cart' product.id %}" method="get">
-                <button type="submit">Добавить в корзину</button>
-            </form>
-        </li>
+<!-- Фильтр по категориям -->
+<form method="get" action="">
+    <label for="category">Выберите категорию:</label>
+    <select name="category" id="category" onchange="this.form.submit()">
+        <option value="">Все категории</option>
+        {% for category in categories %}
+            <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                {{ category.name }}
+            </option>
         {% endfor %}
-    </ul>
-{% endfor %}
+    </select>
+</form>
+
+<!-- Сетка товаров -->
+<div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description }}</p>
+        <p>Цена: <strong>{{ product.price }} руб.</strong></p>
+        <form action="{% url 'add_to_cart' product.id %}" method="get">
+            <button type="submit" class="btn btn-primary">Добавить в корзину</button>
+        </form>
+    </div>
+    {% empty %}
+    <p>Товары не найдены.</p>
+    {% endfor %}
+</div>
 
 {% endblock %}

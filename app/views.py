@@ -221,8 +221,15 @@ def videopost(request):
 
 def catalog(request):
     categories = Category.objects.prefetch_related('products').all()
+    category_id = request.GET.get('category')
+
+    if category_id:
+        products = Product.objects.filter(category_id=category_id)
+    else:
+        products = Product.objects.all()
     context = {
         'categories': categories,
+        'products': products,
         'title': 'Каталог товаров',
         'message': 'Добро пожаловать в наш интернет-магазин!'
     }
