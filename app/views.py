@@ -3,10 +3,11 @@ Definition of views.
 """
 
 from datetime import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
 from .forms import FeedbackForm 
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 from django.db import models
 from .models import Blog
@@ -15,6 +16,7 @@ from .forms import BlogForm
 from .models import Comment
 from .forms import CommentForm
 from .models import Category
+from .models import Cart, CartItem, Product
 
 def home(request):
     """Renders the home page."""
@@ -222,3 +224,29 @@ def catalog(request):
         'message': 'Добро пожаловать в наш интернет-магазин!'
     }
     return render(request, 'app/catalog.html', context)
+
+#@login_required
+def cart(request):
+    if not request.user.is_authenticated:
+        return redirect('login')  # Перенаправление на страницу входа
+    cart_items = CartItem.objects.filter(user=request.user)
+    total_price = sum(item.product.price * item.quantity for item in cart_items)
+    return render(request, 'app/cart.html', {
+        'cart_items': cart_items,
+        'total_price': total_price
+    })
+
+#@login_required
+def add_to_cart(request, product_id):
+    if not request.user.is_authenticated:
+        return redirect('login')  # Перенаправление на страницу входа
+    product = Product.objects.get(id=product_id)
+    cart_item, created = CartItem.objects.get_or_create(
+        product=product,
+        user=request.user,
+        #defaults={'quantity': 1}
+    )
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+    return redirect('cart')
