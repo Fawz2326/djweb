@@ -1,0 +1,43 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<h2>Управление заказами</h2>
+
+<!-- Фильтрация заказов -->
+<form method="get">
+    <label for="status">Фильтр по статусу:</label>
+    <select name="status" id="status" onchange="this.form.submit()">
+        <option value="">Все</option>
+        <option value="В обработке">В обработке</option>
+        <option value="Собран">Собран</option>
+        <option value="Передан в доставку">Передан в доставку</option>
+        <option value="Доставлен">Доставлен</option>
+    </select>
+</form>
+
+<table border="1" cellpadding="10" cellspacing="0">
+    <tr>
+        <th>№ заказа</th>
+        <th>Дата</th>
+        <th>Статус</th>
+        <th>Адрес</th>
+        <th>Контакты</th>
+        <th>Действия</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>№ {{ order.id }}</td>
+        <td>{{ order.created_at|date:"d.m.Y H:i" }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.address }}</td>
+        <td>{{ order.contact_info }}</td>
+        <td>
+            <a href="{% url 'edit_order' order.id %}">Редактировать</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="6">Заказы отсутствуют.</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

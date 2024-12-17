@@ -11,13 +11,15 @@ from django.contrib.auth.decorators import login_required
 
 from django.db import models
 from .models import Blog
-from .forms import BlogForm
+from .forms import BlogForm, OrderStatusUpdateForm
 
 from .models import Comment
 from .forms import CommentForm
 from .models import Category
 from .models import Cart, CartItem, Product
 from .models import Order, OrderItem
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import user_passes_test
 
 def home(request):
     """Renders the home page."""
@@ -287,3 +289,33 @@ def create_order(request):
             )
         cart_items.delete()  # Очистка корзины после оформления заказа
     return redirect('my_orders')
+
+def is_manager(user):
+    return user.groups.filter(name='Managers').exists() or user.is_superuser
+
+# Представление для отображения всех заказов
+@user_passes_test(is_manager)
+def orders_list(request):
+    orders = Order.objects.all().order_by('-created_at')
+    status_filter = request.GET.get('status')
+    if status_filter:
+        orders = orders.filter(status=status_filter)
+
+    context = {'orders': orders}
+    return render(request, 'app/orders_list.html', context)
+
+# Представление для редактирования заказа
+@user_passes_test(is_manager)
+def edit_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    if request.method == 'POST':
+        form = OrderStatusUpdateForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect('orders_list')
+    else:
+        form = OrderStatusUpdateForm(instance=order)
+
+    context = {'order': order, 'form': form}
+    return render(request, 'app/edit_order.html', context)
+

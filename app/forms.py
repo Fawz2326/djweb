@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from .models import Comment
 from .models import Blog
+from .models import Order, OrderItem
 
 
 class BootstrapAuthenticationForm(AuthenticationForm):
@@ -46,4 +47,9 @@ class BlogForm(forms.ModelForm):
         model = Blog
         fields = ('title', 'description', 'content', 'image',)
         labels = {'title': "Заголовок", 'description': "Краткое содержание", 'content': "Полное содержание", 'image': "Картинка"}
+
+class OrderStatusUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['user', 'created_at','status']
 
