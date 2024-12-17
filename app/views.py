@@ -17,6 +17,7 @@ from .models import Comment
 from .forms import CommentForm
 from .models import Category
 from .models import Cart, CartItem, Product
+from .models import Order, OrderItem
 
 def home(request):
     """Renders the home page."""
@@ -266,3 +267,23 @@ def update_cart_quantity(request, item_id):
         if action != "delete":  # Сохраняем только для увеличения/уменьшения
             item.save()
     return redirect('cart')  # Возвращаемся на страницу корзины
+
+@login_required
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user).prefetch_related('items').order_by('-created_at')
+    return render(request, 'app/my_orders.html', {'orders': orders})
+
+@login_required
+def create_order(request):
+    cart_items = CartItem.objects.filter(user=request.user)
+    if cart_items.exists():
+        order = Order.objects.create(user=request.user)
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                quantity=item.quantity,
+                price=item.product.price
+            )
+        cart_items.delete()  # Очистка корзины после оформления заказа
+    return redirect('my_orders')

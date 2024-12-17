@@ -8,6 +8,7 @@ from datetime import datetime
 from django.urls import reverse 
 from django.contrib.auth.models import User
 from django.apps import apps
+from django.utils import timezone
 
 
 class Blog(models.Model):
@@ -79,3 +80,30 @@ class CartItem(models.Model):
 
     def total_price(self):
         return self.product.price * self.quantity
+    
+class Order(models.Model):
+    STATUS_CHOICES = [
+        ('processing', 'В обработке'),
+        ('assembled', 'Собран'),
+        ('shipped', 'Передан в доставку'),
+        ('delivered', 'Доставлен'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
+    created_at = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='processing')
+
+    def __str__(self):
+        return f"Заказ #{self.id} от {self.created_at.strftime('%Y-%m-%d')}"
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def get_total_price(self):
+        return self.quantity * self.price
+
+    def __str__(self):
+        return f"{self.product.name} ({self.quantity})"

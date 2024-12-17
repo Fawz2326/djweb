@@ -1,0 +1,32 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<h2>Мои заказы</h2>
+
+{% if orders %}
+<table border="1" cellpadding="10" cellspacing="0">
+    <tr>
+        <th>Номер заказа</th>
+        <th>Дата заказа</th>
+        <th>Статус</th>
+        <th>Товары</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>№ {{ order.id }}</td>
+        <td>{{ order.created_at|date:"d.m.Y H:i" }}</td>
+        <td>{{ order.get_status_display }}</td>
+        <td>
+            <ul>
+                {% for item in order.items.all %}
+                <li>{{ item.product.name }} - {{ item.quantity }} шт. x {{ item.price }} ₽ = {{ item.get_total_price }} ₽</li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>У вас пока нет заказов.</p>
+{% endif %}
+{% endblock %}

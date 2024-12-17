@@ -34,6 +34,10 @@
 </table>
 
 <h3>Итоговая сумма: {{ total_cart_price }} ₽</h3>
+<form method="POST" action="{% url 'create_order' %}">
+    {% csrf_token %}
+    <button type="submit">Оформить заказ</button>
+</form>
 {% else %}
 <p>Ваша корзина пуста.</p>
 {% endif %}
