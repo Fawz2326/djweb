@@ -260,6 +260,9 @@ def update_cart_quantity(request, item_id):
             item.quantity += 1  # Увеличиваем количество
         elif action == "decrease" and item.quantity > 1:
             item.quantity -= 1  # Уменьшаем количество, но не меньше 1
+        elif action == "delete":
+            item.delete()  # Удаляем товар из корзины
 
-        item.save()  # Сохраняем изменения
+        if action != "delete":  # Сохраняем только для увеличения/уменьшения
+            item.save()
     return redirect('cart')  # Возвращаемся на страницу корзины
