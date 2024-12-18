@@ -317,9 +317,13 @@ def edit_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     if request.method == 'POST':
         form = OrderStatusUpdateForm(request.POST, instance=order)
+        #action = request.POST.get("action")
         if form.is_valid():
             form.save()
             return redirect('orders_list')
+        #if action == "delete":
+            #order.delete()
+            #return redirect('orders_list')
     else:
         form = OrderStatusUpdateForm(instance=order)
 

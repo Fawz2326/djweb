@@ -6,6 +6,7 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Сохранить изменения</button>
+    <!--<button type="submit" name="action" value="delete" style="color: red;">Удалить</button>-->
 </form>
 
 <a href="{% url 'orders_list' %}">Вернуться к списку заказов</a>
