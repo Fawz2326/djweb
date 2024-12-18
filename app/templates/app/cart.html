@@ -6,18 +6,18 @@
 {% if items %}
 <table>
     <tr>
-        <th>Товар</th>
-        <th>Наименование</th>
-        <th>Цена за штуку</th>
-        <th>Количество</th>
-        <th>Общая стоимость</th>
+        <th style="padding: 10px;">Товар  </th>
+        <th style="padding: 10px;">Наименование  </th>
+        <th style="padding: 10px;">Цена за штуку  </th>
+        <th style="padding: 10px;">Количество </th>
+        <th style="padding: 10px;">Общая стоимость  </th>
     </tr>
     {% for item in items %}
     <tr>
-        <td><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="75"></td>
-        <td>{{ item.product.name }}</td>
-        <td>{{ item.product.price }}</td>
-        <td>
+        <td style="padding: 10px;"><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="75"></td>
+        <td style="padding: 10px;">{{ item.product.name }}</td>
+        <td style="padding: 10px;">{{ item.product.price }}</td>
+        <td style="padding: 10px;">
             <form method="POST" action="{% url 'update_cart_quantity' item.id %}">
                 {% csrf_token %}
                 <button type="submit" name="action" value="decrease">-</button>
@@ -27,7 +27,7 @@
                 <button type="submit" name="action" value="delete" style="color: red;">Удалить</button>
             </form>
         </td>
-        <td>{{ item.total_price }} </td>
+        <td style="padding: 10px;">{{ item.total_price }} </td>
     </tr>
     {% endfor %}
     
