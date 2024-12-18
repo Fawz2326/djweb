@@ -6,23 +6,25 @@
 {% if orders %}
 <table border="1" cellpadding="10" cellspacing="0">
     <tr>
-        <th>Номер заказа</th>
-        <th>Дата заказа</th>
-        <th>Статус</th>
-        <th>Товары</th>
+        <th style="padding: 10px;">Номер заказа</th>
+        <th style="padding: 10px;">Дата заказа</th>
+        <th style="padding: 10px;">Статус</th>
+        <th style="padding: 10px;">Товары</th>
+        <th style="padding: 30px;">Сумма</th>
     </tr>
     {% for order in orders %}
     <tr>
-        <td>№ {{ order.id }}</td>
-        <td>{{ order.created_at|date:"d.m.Y H:i" }}</td>
-        <td>{{ order.get_status_display }}</td>
-        <td>
+        <td style="padding: 10px;">№ {{ order.id }}</td>
+        <td style="padding: 10px;">{{ order.created_at|date:"d.m.Y H:i" }}</td>
+        <td style="padding: 10px;">{{ order.get_status_display }}</td>
+        <td style="padding: 10px;">
             <ul>
                 {% for item in order.items.all %}
                 <li>{{ item.product.name }} - {{ item.quantity }} шт. x {{ item.price }} ₽ = {{ item.get_total_price }} ₽</li>
                 {% endfor %}
             </ul>
         </td>
+        <td style="padding: 10px;"> {% for item in order.items.all %} {{ item.get_total_price }} ₽ {% endfor %}</td>
     </tr>
     {% endfor %}
 </table>
